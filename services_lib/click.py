@@ -68,7 +68,7 @@ def build_soocii_cli(ci_tools):
         """
         Build and push web docker image to private registry
         """
-        ci_tools.bulid_and_push()
+        ci_tools.build_and_push()
 
     @soocii_cli.command('deploy-to-integ', short_help='Deployment to integration server.')
     def deploy_to_integration():
