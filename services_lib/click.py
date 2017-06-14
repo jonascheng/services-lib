@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+import calendar
 import configparser
+import datetime
 import logging
 import os
 import platform
@@ -34,8 +36,45 @@ def bash(cmd):
     subprocess.call(cmd, shell=True)
 
 
-def setup_click_ctx(ci_tools_instance):
-    click.get_current_context().obj['ci_tools'] = ci_tools_instance
+def build_soocii_cli(ci_tools):
+    """
+    If you need to customized some CI command, you can override methods in CiTools.
+
+    :param ci_tools: A instance of CiTools.
+    :return: A Click command group with commands which are needed by CI.
+    """
+
+    if type(ci_tools) is not CiTools:
+        raise ValueError("type({}) is not CiTools".format(ci_tools))
+
+    @click.group(chain=True)
+    def soocii_cli():
+        pass
+
+    @soocii_cli.command('docker-login', short_help='Let docker client login to ECR')
+    def docker_login():
+        ci_tools.docker_login()
+
+    @soocii_cli.command('build', short_help='Build web docker image on local')
+    def build():
+        """
+        Build web docker image on local
+        """
+
+        ci_tools.build()
+
+    @soocii_cli.command('build-and-push', short_help='Build and push web docker image to private registry')
+    def build_and_push():
+        """
+        Build and push web docker image to private registry
+        """
+        ci_tools.bulid_and_push()
+
+    @soocii_cli.command('deploy-to-integ', short_help='Deployment to integration server.')
+    def deploy_to_integration():
+        ci_tools.deploy_to_integ()
+
+    return soocii_cli
 
 
 class CiTools:
@@ -102,6 +141,14 @@ class CiTools:
         return config.get('DEFAULT', 'IP'), config.get('DEFAULT', 'SSH_KEY')
 
     @staticmethod
+    def _get_timestamp():
+        """
+        Get timestamp from current UTC time
+        """
+        utc_time = datetime.datetime.utcnow()
+        return calendar.timegm(utc_time.timetuple())
+
+    @staticmethod
     def _get_docker_ver_label():
         build_number_from_jenkins = os.getenv('BUILD_NUMBER', False)
         git_branch = os.getenv('GIT_BRANCH', None)
@@ -112,7 +159,7 @@ class CiTools:
             git_branch = None
         logger.info('Current branch is %s', git_branch)
         if not build_number_from_jenkins:
-            version = '%s' % get_timestamp()
+            version = '%s' % CiTools._get_timestamp()
         else:
             version = build_number_from_jenkins
         if git_branch is None:
@@ -133,7 +180,7 @@ class CiTools:
         for line in p.stdout:
             response += line.decode('utf-8')
         for line in p.stderr:
-            print('Can not get docker login infoamation : %s' %
+            print('Can not get docker login information : %s' %
                   line.decode('utf-8'))
             success = False
         p.wait()
@@ -158,44 +205,3 @@ class CiTools:
             self.aws.account, self.aws.region, self.repo, label)
 
         bash('docker push %s' % aws_registry_repo)
-
-
-def _get_ci_tools():
-    return click.get_current_context().obj.get('ci_tools')
-
-
-@click.group(chain=True)
-def soocii_cli():
-    if not _get_ci_tools():
-        raise ValueError("Please call `setup_click_ctx` to setup `CiTools` before using `soocii_cli`.")
-
-
-@soocii_cli.command('docker-login', short_help='Let docker client login to ECR')
-def docker_login():
-    _get_ci_tools().docker_login()
-
-
-@soocii_cli.command('build', short_help='Build web docker image on local')
-def build():
-    """
-    Build web docker image on local
-    """
-    _get_ci_tools().build()
-
-
-@soocii_cli.command('build-and-push', short_help='Build and push web docker image to private registry')
-def build_and_push():
-    """
-    Build and push web docker image to private registry
-    """
-    _get_ci_tools().bulid_and_push()
-
-
-@soocii_cli.command('deploy-to-integ', short_help='Deployment to integration server.')
-def deploy_to_integration():
-    _get_ci_tools().deploy_to_integ()
-
-
-if __name__ == '__main__':
-    cli = click.CommandCollection(sources=[soocii_cli])
-    cli()
