@@ -5,7 +5,7 @@ from setuptools import setup
 setup(
     name='serviceslib',
     version='1.0.0',
-    packages=['services-lib'],
+    packages=['services_lib'],
     url='https://github.com/drmobile/services-lib',
     license='',
     author='Soocii',
