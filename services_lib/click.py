@@ -6,6 +6,7 @@ import logging
 import os
 import platform
 import subprocess
+from abc import ABCMeta, abstractmethod
 from collections import namedtuple
 from io import BytesIO
 
@@ -44,8 +45,10 @@ def build_soocii_cli(ci_tools):
     :return: A Click command group with commands which are needed by CI.
     """
 
-    if type(ci_tools) is not CiTools:
-        raise ValueError("type({}) is not CiTools".format(ci_tools))
+    if not isinstance(ci_tools, CiToolsAbc):
+        raise ValueError(
+            "type({}) is not CiToolsAbc. You need to use `CiTools` or implement `CiToolsAbc`.".format(ci_tools)
+        )
 
     @click.group(chain=True)
     def soocii_cli():
@@ -77,7 +80,25 @@ def build_soocii_cli(ci_tools):
     return soocii_cli
 
 
-class CiTools:
+class CiToolsAbc(metaclass=ABCMeta):
+    @abstractmethod
+    def docker_login(self):
+        pass
+
+    @abstractmethod
+    def build(self):
+        pass
+
+    @abstractmethod
+    def build_and_push(self):
+        pass
+
+    @abstractmethod
+    def deploy_to_integ(self):
+        pass
+
+
+class CiTools(CiToolsAbc):
     def __init__(self, repo, aws_account='710026814108', aws_region='ap-northeast-1'):
         """Some common functions which may be used by soocii.py script.
 
