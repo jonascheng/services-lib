@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/drmobile/services-lib.svg?branch=master)](https://travis-ci.org/drmobile/services-lib)
 # services-lib
 Library for back-end services which include common functions/scripts/libraries.
 
