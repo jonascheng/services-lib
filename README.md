@@ -47,3 +47,8 @@ You can use `pyenv` to install 3.3.6 and 3.5.3.
 ```commandline
 tox
 ```
+
+### Deploy to PYPI
+1. Tag the commit with new version
+2. Update version number in setup.py. Follow [Semantic Version](http://semver.org/) 
+3. Merge to master branch
