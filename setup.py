@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='soocii-services-lib',
-    version='1.0.1',
+    version='1.0.2',
     packages=['soocii_services_lib'],
     url='https://github.com/drmobile/services-lib',
     license='Apache Software License',
