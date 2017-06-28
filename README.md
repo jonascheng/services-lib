@@ -13,7 +13,7 @@ or add following line in requirement.txt
 ### Basic Usage
 ```python
 import click
-from services_lib.click import CiTools, build_soocii_cli
+from soocii_services_lib.click import CiTools, build_soocii_cli
 
 tools = CiTools('vision')
 soocii_cli = build_soocii_cli(tools)
@@ -24,7 +24,7 @@ click.CommandCollection(sources=[soocii_cli])
 ```python
 import os
 import click
-from services_lib.click import CiTools, build_soocii_cli
+from soocii_services_lib.click import CiTools, build_soocii_cli
 
 
 def setup_env():
