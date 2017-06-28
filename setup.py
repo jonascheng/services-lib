@@ -3,14 +3,14 @@
 from setuptools import setup
 
 setup(
-    name='serviceslib',
+    name='soocii-services-lib',
     version='1.0.0',
-    packages=['services_lib'],
+    packages=['soocii_services_lib'],
     url='https://github.com/drmobile/services-lib',
-    license='',
+    license='Apache Software License',
     author='Soocii',
     author_email='service@soocii.me',
-    description='Library for Soocii back-end services which include common functions/scripts/libraries.',
+    description='Library for Soocii back-end services which include common functions/scripts/packages.',
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
@@ -34,5 +34,13 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['click', 'Fabric3', 'boto3', 'awscli']
+    install_requires=['click', 'Fabric3', 'boto3', 'awscli'],
+
+    # List additional groups of dependencies here (e.g. development
+    # dependencies). You can install these using the following syntax,
+    # for example:
+    # $ pip install -e .[dev,test]
+    extras_require={
+        'test': ['pytest', 'tox']
+    }
 )

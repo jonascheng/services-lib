@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 import pytest
 from click.testing import CliRunner
 
-from services_lib.click import CiTools, build_soocii_cli
+from soocii_services_lib.click import CiTools, build_soocii_cli
 
 
 class CiToolsTestCases(TestCase):
