@@ -1,11 +1,20 @@
 sudo: false
 language: python
 python:
-  - "3.3"
-  - "3.5"
+  - '3.3'
+  - '3.5'
 install: pip install tox-travis
-script: tox
+script: tox --travis-after
 notifications:
   email:
     recipients:
       - service@soocii.me
+deploy:
+  provider: pypi
+  user: calvin620707
+  password:
+    secure: pU03U7FutNlCBdWLev1t6RLZ7QcZuQM+w9a+/RcQhg9keeAmdoR1BK7P4M+67UpQGu7uopfkWohyvzn9CAq47wLh58mnyw8SWlp+zEk7tpkLlM9xCMTLh8Hx30B1/XJzvX5isBZaMzr8odVCbcVqwPbZQsJj39oOV/g8gp7tKb9P/xgoPXPlirK7T2x+Vto5IKgiDchOfsM248Ksivx3v9VwMyurEi3FPNzutyG8EE+FYydmKGn3iRRx0iEx/OuA4IdpiUukdF7Yn7V8scy25u8qkuPTRnZhZv/1Ls9m8pzfqYrXq+gzp8i39RVF+kk3B/CUrSRBm2v+f2zoiX+sbIi/scRhZwkJsQGDwjPotRJWe2hLAKOyP19VBHbHtZGQhYc933rMAoufV1XdIT5+vBTKE8TJI9M2AMG2Y6TuJoMBvQSSEW5VkEnR7J7AYcJ+pDIXNGEXZLX4nw9+DtKCFx12pL5GvSqVPsnAgIT1TyDIw+YNnbnHXbIKkpHE+Pn23hW8jVrWX5kQ8WFXKjx6XWWhJPPvIX+67SrVpWLWFTQMGbcrB/zm2MXqwpUSn13teFmoWCU8eGA+qIe44GYbUp6VhL83nipfREw+v0LPU9SN8JJaxnA/ALutsr6R9AMIqC52hEPeWUTtCItH79VTETBVAx5uV8uTjQFarv5dva0=
+  on:
+    branch: master
+    tags: true
+    python: 3.5
