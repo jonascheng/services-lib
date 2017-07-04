@@ -3,11 +3,9 @@
 Library for back-end services which include common functions/scripts/libraries.
 
 ## Installation
-`pip install -e git+https://github.com/drmobile/services-lib#egg=serviceslib`
-
-or add following line in requirement.txt
-
-`-e git+https://github.com/drmobile/services-lib#egg=serviceslib`
+```commandline
+pip install soocii-services-lib
+```
 
 ## click.py
 ### Basic Usage
@@ -41,6 +39,11 @@ cli = click.CommandCollection(sources=[soocii_cli])
 ```
 
 ## Development
+### Setup Environment
+```commandline
+pip install -e .[test]
+```
+
 ### Run Test
 You can use `pyenv` to install 3.3.6 and 3.5.3.
 
