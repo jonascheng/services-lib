@@ -49,6 +49,7 @@ tox
 ```
 
 ### Deploy to PYPI
-1. Tag the commit with new version
-2. Update version number in setup.py. Follow [Semantic Version](http://semver.org/) 
-3. Merge to master branch
+1. Update version number in setup.py. Follow [Semantic Version](http://semver.org/) 
+2. Send a PR on `develop` branch
+3. Create a PR to merge `develop` branch into `master` branch
+4. Tag `master` branch with version
