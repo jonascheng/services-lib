@@ -3,11 +3,9 @@
 Library for back-end services which include common functions/scripts/libraries.
 
 ## Installation
-`pip install -e git+https://github.com/drmobile/services-lib#egg=serviceslib`
-
-or add following line in requirement.txt
-
-`-e git+https://github.com/drmobile/services-lib#egg=serviceslib`
+```commandline
+pip install soocii-services-lib
+```
 
 ## click.py
 ### Basic Usage
@@ -41,6 +39,11 @@ cli = click.CommandCollection(sources=[soocii_cli])
 ```
 
 ## Development
+### Setup Environment
+```commandline
+pip install -e .[test]
+```
+
 ### Run Test
 You can use `pyenv` to install 3.3.6 and 3.5.3.
 
@@ -49,7 +52,7 @@ tox
 ```
 
 ### Deploy to PYPI
-1. Update version number in setup.py. Follow [Semantic Version](http://semver.org/).
-2. Send a PR on `develop` branc
-3. Merge PR to master branch
-4. Tag master branch with version. Ex. tag master branch with `v1.0.3`
+1. Update version number in setup.py. Follow [Semantic Version](http://semver.org/) 
+2. Send a PR on `develop` branch
+3. Create a PR to merge `develop` branch into `master` branch
+4. Tag `master` branch with version
