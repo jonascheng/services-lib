@@ -41,6 +41,7 @@ setup(
     # for example:
     # $ pip install -e .[dev,test]
     extras_require={
-        'test': ['pytest', 'tox']
+        'test': ['pytest', 'tox'],
+        'doc': ['Sphinx']
     }
 )
