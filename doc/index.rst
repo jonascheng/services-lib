@@ -6,11 +6,15 @@
 Welcome to Soocii Service Library's documentation!
 ==================================================
 
+This package is prepare for Soocii's backend services usage.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-
+   quickstart
+   development
+   reference
 
 Indices and tables
 ==================
@@ -18,6 +22,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-.. automodule:: click
-   :members:
