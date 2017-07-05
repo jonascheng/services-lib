@@ -2,6 +2,9 @@
 # services-lib
 Library for back-end services which include common functions/scripts/libraries.
 
+# Document
+http://soocii-services-lib.readthedocs.io/en/latest/
+
 ## Installation
 ```commandline
 pip install soocii-services-lib

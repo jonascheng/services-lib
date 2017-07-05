@@ -24,7 +24,7 @@ logger.addHandler(console_handler)
 logger.setLevel(logging.INFO)
 
 
-def build_cmd_by_platform(cmd):
+def _build_cmd_by_platform(cmd):
     if 'darwin' in platform.platform().lower():  # Mac
         return cmd
     else:
@@ -32,17 +32,30 @@ def build_cmd_by_platform(cmd):
 
 
 def bash(cmd):
-    cmd = build_cmd_by_platform(cmd)
+    """ Run bash with colorized and use `sudo` based on platform.
+
+    Run without sudo on Mac; Otherwise, run with sudo.
+
+    :param cmd: commands to execute in bash.
+    :return:
+    """
+    cmd = _build_cmd_by_platform(cmd)
     click.echo(click.style('Run ', fg='green', bold=True) + click.style(cmd))
     subprocess.call(cmd, shell=True)
 
 
 def build_soocii_cli(ci_tools):
-    """
-    If you need to customized some CI command, you can override methods in CiTools.
+    """Build click commands group for CI
+
+    This function will build a click commands group. This click command group will run commands by implementations in
+    `ci_tools`.
+    If you need to customized some CI commands, you can override methods in CiTools.
 
     :param ci_tools: A instance of CiTools.
     :return: A Click command group with commands which are needed by CI.
+
+    .. seealso:: :class:`click.CiToolsAbc`
+    .. seealso:: :class:`click.CiTools`
     """
 
     if not isinstance(ci_tools, CiToolsAbc):
@@ -81,6 +94,11 @@ def build_soocii_cli(ci_tools):
 
 
 class CiToolsAbc(metaclass=ABCMeta):
+    """An interface of CiTool
+
+    You can inherit this interface to implement your own CiTool and build click command group by passing your CiTool to
+    :func:`~click.build_soocii_cli`
+    """
     @abstractmethod
     def docker_login(self):
         pass
@@ -99,6 +117,10 @@ class CiToolsAbc(metaclass=ABCMeta):
 
 
 class CiTools(CiToolsAbc):
+    """Implementation of click commands
+
+    This :class:`click.CiTools` collect some simple implementations which needed by Jenkins for CI/CD.
+    """
     def __init__(self, repo, aws_account='710026814108', aws_region='ap-northeast-1'):
         """Some common functions which may be used by soocii.py script.
 
@@ -110,6 +132,9 @@ class CiTools(CiToolsAbc):
         self.aws = namedtuple('Aws', ['account', 'region'])(aws_account, aws_region)
 
     def docker_login(self):
+        """
+        Login AWS ECR
+        """
         success, resp = self._get_ecr_login()
         if not success:
             logging.error("fail to login docker.")
@@ -118,7 +143,7 @@ class CiTools(CiToolsAbc):
 
     def build(self):
         """
-        Build web docker image on local
+        Build docker image on local
         """
         version, label = self._get_docker_ver_label()
         self.build_docker_image(version, label)
@@ -127,7 +152,7 @@ class CiTools(CiToolsAbc):
 
     def build_and_push(self):
         """
-        Build and push web docker image to private registry
+        Build and push docker image to private registry on AWS ECR
         """
         success, response = self._get_ecr_login()
         if not success:
@@ -140,6 +165,9 @@ class CiTools(CiToolsAbc):
         logger.info('Build and push image version %s with label %s to registry done', version, label)
 
     def deploy_to_integ(self):
+        """
+        Deploy docker to integration server
+        """
         ip, key = self._get_integ_server_info()
 
         with settings(host_string=ip, user='ubuntu', key=key):
@@ -220,7 +248,7 @@ class CiTools(CiToolsAbc):
 
     def push_docker_image(self, label):
         """
-        Push docker image with latest label to registry
+        Push docker image with latest label to AWS ECR registry
         """
         aws_registry_repo = '%s.dkr.ecr.%s.amazonaws.com/%s:%s' % (
             self.aws.account, self.aws.region, self.repo, label)
