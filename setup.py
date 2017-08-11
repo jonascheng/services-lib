@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='soocii-services-lib',
-    version='1.0.2',
+    version='1.1.0',
     packages=['soocii_services_lib'],
     url='https://github.com/drmobile/services-lib',
     license='Apache Software License',
@@ -14,7 +14,7 @@ setup(
 
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
 
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
@@ -26,7 +26,7 @@ setup(
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
     ],
 
