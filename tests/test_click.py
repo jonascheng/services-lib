@@ -1,13 +1,12 @@
-from unittest import TestCase
 from unittest.mock import MagicMock
 
 import pytest
 from click.testing import CliRunner
 
-from soocii_services_lib.click import CiTools, build_soocii_cli
+from soocii_services_lib.click import CiTools, build_soocii_cli, bash
 
 
-class CiToolsTestCases(TestCase):
+class TestCiTools:
     def test_command_call_methods(self):
         """Test if soocii_cli call CiTools' methods"""
         runner = CliRunner()
@@ -25,8 +24,12 @@ class CiToolsTestCases(TestCase):
             getattr(tools, m).assert_called_with()
 
 
-class FunctionsTestCases(TestCase):
-    def test_build_soocii_cli_instance_type_check(self):
-        with pytest.raises(ValueError):
-            non_ci_tools_instance = list()
-            build_soocii_cli(non_ci_tools_instance)
+def test_build_soocii_cli_instance_type_check():
+    with pytest.raises(ValueError):
+        non_ci_tools_instance = list()
+        build_soocii_cli(non_ci_tools_instance)
+
+
+def test_bash_return_exit_code():
+    assert 0 == bash('true')
+    assert 1 == bash('false')
