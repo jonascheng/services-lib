@@ -45,6 +45,7 @@ cli = click.CommandCollection(sources=[soocii_cli])
 ### Setup Environment
 ```commandline
 pip install -e .[test]
+pyenv local 3.4.6 3.5.3
 ```
 
 ### Run Test
