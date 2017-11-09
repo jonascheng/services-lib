@@ -27,6 +27,8 @@ logger.setLevel(logging.INFO)
 def _build_cmd_by_platform(cmd):
     if 'darwin' in platform.platform().lower():  # Mac
         return cmd
+    elif os.geteuid() == 0:  # root user
+        return cmd
     else:
         return 'sudo ' + cmd
 
@@ -41,7 +43,7 @@ def bash(cmd):
     """
     cmd = _build_cmd_by_platform(cmd)
     click.echo(click.style('Run ', fg='green', bold=True) + click.style(cmd))
-    subprocess.call(cmd, shell=True)
+    return subprocess.call(cmd, shell=True)
 
 
 def build_soocii_cli(ci_tools):
