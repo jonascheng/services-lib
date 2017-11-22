@@ -61,3 +61,9 @@ tox
 2. Send a PR on `develop` branch
 3. Create a PR to merge `develop` branch into `master` branch
 4. Tag `master` branch with version
+
+### Make Sphinx document
+```commandline
+cd doc
+make html
+```

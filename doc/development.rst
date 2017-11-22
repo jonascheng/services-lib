@@ -21,3 +21,13 @@ Deploy to PYPI
 #. Send a PR on develop branch
 #. Create a PR to merge develop branch into master branch
 #. Tag master branch with version
+
+Make Sphinx document
+--------------------
+::
+
+    pip install -e .[doc]
+    cd doc
+    make html
+
+Then you can review document in *doc/_build/html/index.html*

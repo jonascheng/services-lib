@@ -2,4 +2,7 @@ API Reference
 =============
 
 .. automodule:: click
-   :members:
+    :members:
+
+.. automodule:: util
+    :members:
