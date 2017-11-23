@@ -9,6 +9,8 @@ from flask import g, request, current_app, abort, jsonify, make_response
 from flask_soocii_auth import users
 from soocii_services_lib import auth
 
+__all__ = ('SoociiAuthenticator',)
+
 
 class SoociiAuthenticator:
     """ Access token authenticator for Soocii
@@ -18,6 +20,7 @@ class SoociiAuthenticator:
     This Authenticator will also store user info in `g.user`.
     You can refer to `flask_soocii_auth.users` for more information.
     """
+
     def __init__(self, app, is_safe_request_func=None):
         """Construct a Soocii Authenticator
 
@@ -102,6 +105,3 @@ class SoociiAuthenticator:
             return
 
         g.user = users.User()
-
-
-__all__ = (SoociiAuthenticator,)

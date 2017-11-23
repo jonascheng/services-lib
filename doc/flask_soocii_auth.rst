@@ -4,10 +4,10 @@ flask\_soocii\_auth package
 Submodules
 ----------
 
-flask\_soocii\_auth\.flask\_soocii\_auth module
------------------------------------------------
+flask\_soocii\_auth\.users module
+---------------------------------
 
-.. automodule:: flask_soocii_auth.flask_soocii_auth
+.. automodule:: flask_soocii_auth.users
     :members:
     :undoc-members:
     :show-inheritance:

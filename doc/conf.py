@@ -19,7 +19,8 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../soocii_services_lib'))
+sys.path.append(os.path.abspath('../soocii_services_lib'))
+sys.path.append(os.path.abspath('../flask_soocii_auth'))
 
 
 # -- General configuration ------------------------------------------------
