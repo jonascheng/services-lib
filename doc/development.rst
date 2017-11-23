@@ -28,7 +28,7 @@ Make Sphinx document
 
     $ pip install -e .[doc]
     $ cd doc
-    $ sphinx-apidoc -o . ../soocii_services_lib
+    $ sphinx-apidoc -o . ../ ../tests ../setup.py
     $ make html
 
 Then you can review document in :file:`doc/_build/html/index.html`
