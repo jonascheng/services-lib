@@ -3,7 +3,7 @@ Quick Start
 Installation
 ------------
 Just use pip to install. This package already deploy to
-`pypi <https://pypi.python.org/pypi?name=soocii-services-lib&version=1.0.2&:action=display>`_. ::
+`pypi <https://pypi.python.org/pypi/soocii-services-lib>`_. ::
 
    pip install soocii-services-lib
 
@@ -41,3 +41,19 @@ example. ::
    tools = MyCiTools('pepper')
    soocii_cli = build_soocii_cli(tools)
    cli = click.CommandCollection(sources=[soocii_cli])
+
+util.py
+-------
+:py:func:`soocii_services_lib.util.wait_for_internet_connection`
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+You can use this function to wait for specific server ready (Ex. wait for elasticsearch server ready)
+
+auth.py
+-------
+This package provide two APIs to generate and decode access token used by Soocii.
+
+#. :py:func:`soocii_services_lib.auth.generate_access_token`
+#. :py:func:`soocii_services_lib.auth.decode_access_token`
+
+You need to setup secrets in environment variables, :envvar:`ACCESS_TOKEN_SECRET` and :envvar:`REFRESH_TOKEN_SECRET`
+before starting using these two APIs

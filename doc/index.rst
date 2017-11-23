@@ -14,7 +14,7 @@ This package is prepare for Soocii's backend services usage.
 
    quickstart
    development
-   reference
+   modules
 
 Indices and tables
 ==================

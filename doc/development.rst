@@ -30,4 +30,4 @@ Make Sphinx document
     cd doc
     make html
 
-Then you can review document in *doc/_build/html/index.html*
+Then you can review document in :file:`doc/_build/html/index.html`
