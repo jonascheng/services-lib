@@ -6,14 +6,14 @@ Setup Environment
 You can use pip `editable <https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs>`_ mode to develop
 this package. ::
 
-    pip install -e .[test]
+    $ pip install -e .[test]
 
 Run Test
 --------
 You can use pyenv to install python 3.3.6 and 3.5.3. Then run following command to test with different python
 versions. ::
 
-    tox
+    $ tox
 
 Deploy to PYPI
 --------------
@@ -26,8 +26,9 @@ Make Sphinx document
 --------------------
 ::
 
-    pip install -e .[doc]
-    cd doc
-    make html
+    $ pip install -e .[doc]
+    $ cd doc
+    $ sphinx-apidoc -o . ../soocii_services_lib
+    $ make html
 
 Then you can review document in :file:`doc/_build/html/index.html`
