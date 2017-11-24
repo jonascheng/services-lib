@@ -1,11 +1,11 @@
 # Sample https://github.com/pypa/sampleproject
 
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='soocii-services-lib',
-    version='1.1.1',
-    packages=['soocii_services_lib'],
+    version='1.2.0',
+    packages=find_packages(exclude=['tests']),
     url='https://github.com/drmobile/services-lib',
     license='Apache Software License',
     author='Soocii',
@@ -34,7 +34,7 @@ setup(
     # your project is installed. For an analysis of "install_requires" vs pip's
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
-    install_requires=['click', 'Fabric3', 'boto3', 'awscli'],
+    install_requires=['click', 'Fabric3', 'boto3', 'awscli', 'pycrypto', 'flask'],
 
     # List additional groups of dependencies here (e.g. development
     # dependencies). You can install these using the following syntax,
