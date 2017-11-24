@@ -2,11 +2,13 @@
 
 Reference: http://flask.pocoo.org/docs/0.12/extensiondev/#extension-dev
 """
+import binascii
+import os
 from functools import partial
 
 from flask import g, request, current_app, abort, jsonify, make_response
 
-from flask_soocii_auth import users
+from flask_soocii_auth import users, exceptions
 from soocii_services_lib import auth
 
 __all__ = ('SoociiAuthenticator',)
@@ -30,10 +32,20 @@ class SoociiAuthenticator:
                                      Otherwise, return False. SoociiAuthenticator will abort the request with
                                      HTTP 401 while request without token and `is_safe_request_func` return `False`.
         """
+
+        self._validate_env_vars()
+
         self.app = app
         self.is_safe_req_func = is_safe_request_func
 
         self._register_hooks()
+
+    def _validate_env_vars(self):
+        try:
+            binascii.unhexlify(os.getenv('ACCESS_TOKEN_SECRET'))
+            binascii.unhexlify(os.getenv('REFRESH_TOKEN_SECRET'))
+        except binascii.Error:
+            raise exceptions.InvalidTokenSecretError
 
     def _register_hooks(self):
         self.app.before_request(partial(SoociiAuthenticator.validate_token, self.is_safe_req_func))

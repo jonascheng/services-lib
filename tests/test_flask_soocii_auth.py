@@ -1,11 +1,12 @@
 import os
 import uuid
 
+import pytest
 from flask import Flask, Response, g
 
 from flask.ext.soocii_auth import SoociiAuthenticator
+from flask_soocii_auth import users, exceptions
 from soocii_services_lib import auth
-from flask_soocii_auth import users
 
 
 class TestFlaskSoociiAuth:
@@ -82,3 +83,10 @@ class TestFlaskSoociiAuth:
             resp = c.get('/')
             assert resp.status_code == 200
             assert isinstance(g.user, users.AnonymousUser)
+
+    def test_env_vars_invalid(self):
+        os.environ['ACCESS_TOKEN_SECRET'] = 'None'
+        os.environ['REFRESH_TOKEN_SECRET'] = 'None'
+
+        with pytest.raises(exceptions.InvalidTokenSecretError):
+            SoociiAuthenticator(self.app)

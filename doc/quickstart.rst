@@ -64,7 +64,12 @@ Basic Usage
 ^^^^^^^^^^^
 ::
 
+    import os
+
     from flask.ext.soocii_auth import SoociiAuthenticator
+
+    os.environ['ACCESS_TOKEN_SECRET'] = '6ca21c5ab8a6c181f5cfb91479588e37'
+    os.environ['REFRESH_TOKEN_SECRET'] = 'ea57844efdcd163c4d84b8f7bf087baf'
 
     app = Flask(__name__)
     SoociiAuthenticator(app)
@@ -82,7 +87,12 @@ function which `args[0]` is `flask.request` and return boolean to indicate wheth
 Then pass this function to :py:class:`flask_soocii_auth.SoociiAuthenticator` constructor.
 ::
 
+    import os
+
     from flask.ext.soocii_auth import SoociiAuthenticator
+
+    os.environ['ACCESS_TOKEN_SECRET'] = '6ca21c5ab8a6c181f5cfb91479588e37'
+    os.environ['REFRESH_TOKEN_SECRET'] = 'ea57844efdcd163c4d84b8f7bf087baf'
 
     def is_safe_request(req):
         if 'healthcheck' in req.path:
