@@ -84,7 +84,7 @@ def decode_access_token(token, check_timestamp=True):
     return token
 
 
-def generate_access_token(pid, uid, id, uuid, lang='EN-US', device_type=''):
+def generate_access_token(pid, uid, id, uuid, lang='EN-US', device_type='', soocii_id=''):
     token = _generate_token(json.dumps({
         "pid": pid,
         "uid": uid,
@@ -92,7 +92,8 @@ def generate_access_token(pid, uid, id, uuid, lang='EN-US', device_type=''):
         "uuid": uuid,
         "timestamp": int(time.time()),
         "lang": lang,
-        "device_type": device_type
+        "device_type": device_type,
+        "soocii_id": soocii_id
     }, ensure_ascii=False), _get_token_info()["access"]["secret_key"])
 
     return token
