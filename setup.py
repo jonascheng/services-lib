@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='soocii-services-lib',
-    version='1.2.2',
+    version='1.2.3',
     packages=find_packages(exclude=['tests']),
     url='https://github.com/drmobile/services-lib',
     license='Apache Software License',

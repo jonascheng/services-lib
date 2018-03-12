@@ -112,7 +112,7 @@ class SoociiAuthenticator:
             g.user = users.AnonymousUser()
             return
 
-        if g.access_token['soocii_id'] == 'soocii_guest':
+        if g.access_token.get('soocii_id') == 'soocii_guest':
             g.user = users.SoociiGuest()
             return
 
