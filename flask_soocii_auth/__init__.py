@@ -112,6 +112,10 @@ class SoociiAuthenticator:
             g.user = users.AnonymousUser()
             return
 
+        if g.access_token['soocii_id'] == 'soocii_guest':
+            g.user = users.SoociiGuest()
+            return
+
         if g.access_token['uid'] == '':
             g.user = users.BackstageUser()
             return
