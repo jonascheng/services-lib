@@ -84,6 +84,16 @@ class TestFlaskSoociiAuth:
             assert resp.status_code == 200
             assert isinstance(g.user, users.AnonymousUser)
 
+    def test_user_soocii_guest(self):
+        with self.app.test_client() as c:
+            token = auth.generate_access_token(
+                '', uuid.uuid4().hex, 1, uuid.uuid4().hex, soocii_id="soocii_guest"
+            ).decode('utf-8')
+            SoociiAuthenticator(self.app)
+            resp = c.get('/', headers={'Authorization': 'Bearer {}'.format(token)})
+            assert resp.status_code == 200
+            assert isinstance(g.user, users.SoociiGuest)
+
     def test_env_vars_invalid(self):
         os.environ['ACCESS_TOKEN_SECRET'] = 'None'
         os.environ['REFRESH_TOKEN_SECRET'] = 'None'
