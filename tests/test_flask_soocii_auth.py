@@ -4,7 +4,7 @@ import uuid
 import pytest
 from flask import Flask, Response, g
 
-from flask.ext.soocii_auth import SoociiAuthenticator
+from flask_soocii_auth import SoociiAuthenticator
 from flask_soocii_auth import users, exceptions
 from soocii_services_lib import auth
 
