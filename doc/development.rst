@@ -15,6 +15,10 @@ versions. ::
 
     $ tox
 
+To use tox with pyenv. You need to setup python versions by following command. ::
+
+    $ pyenv local 3.3.6 3.5.3
+
 Deploy to PYPI
 --------------
 #. Update version number in setup.py. Follow Semantic Version
