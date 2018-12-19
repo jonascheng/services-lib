@@ -1,31 +1,9 @@
-import binascii
-import json  # import simplejson if json not work
+import json
+import os
 import time
 
-import os
-from .crypter import AESCipher
-
-
-def _decode_token(token, secret_key):
-    # convert the pre-defined secret from hex string.
-    bin_secret = binascii.unhexlify(secret_key)
-    aes = AESCipher(bin_secret)
-
-    if isinstance(token, str):
-        token = token.encode('utf-8')
-
-    return aes.decrypt(token)
-
-
-def _generate_token(raw, secret_key):
-    # convert the pre-defined secret from hex string
-    bin_secret = binascii.unhexlify(secret_key)
-    aes = AESCipher(bin_secret)
-
-    if isinstance(raw, str):
-        raw = raw.encode('utf-8')
-
-    return aes.encrypt(raw)
+from .exceptions import BaseValidationError
+from .tokens import AccessTokenCryper, RefreshTokenCryper
 
 
 class AccessTokenValidationFail(Exception):
@@ -38,52 +16,44 @@ class RefreshTokenValidationFail(Exception):
 
 def _get_token_info():
     return {
-        "access": {
-            "secret_key": os.getenv('ACCESS_TOKEN_SECRET', 'None'),
-            "age": 43200,
-            "exception": AccessTokenValidationFail
+        'access': {
+            'secret_key': os.getenv('ACCESS_TOKEN_SECRET', 'None'),
+            'age': 43200,
+            'exception': AccessTokenValidationFail
         },
-        "refresh": {
-            "secret_key": os.getenv('REFRESH_TOKEN_SECRET', 'None'),
-            "age": 604800,
-            "exception": RefreshTokenValidationFail
+        'refresh': {
+            'secret_key': os.getenv('REFRESH_TOKEN_SECRET', 'None'),
+            'age': 604800,
+            'exception': RefreshTokenValidationFail
         },
     }
 
 
 def decode_access_token(token, check_timestamp=True):
-    info = _get_token_info()['access']
+    if type(token) is str:
+        token = token.encode('utf-8')
+    key_info = _get_token_info()['access']
+    cryper = AccessTokenCryper(key_info['secret_key'], key_info['age'])
 
-    if not token:
-        raise info["exception"]
+    try:
+        # compatible leagcy token, wihtout verify schema
+        token = cryper._token_cls(json.loads(cryper._decode(token).decode('utf-8')))
+    except ValueError:
+        raise key_info['exception']
 
-    token = json.loads(_decode_token(token, info["secret_key"]).decode('utf-8'))
-
-    if check_timestamp and token["timestamp"] + info["age"] < int(time.time()):
-        raise info["exception"]
+    if check_timestamp and token['timestamp'] + key_info['age'] < int(time.time()):
+        raise key_info['exception']
 
     return token
 
 
 def generate_access_token(pid, uid, id, uuid, lang='EN-US', device_type='', soocii_id=''):
-    token = _generate_token(json.dumps({
-        "pid": pid,
-        "uid": uid,
-        "id": id,
-        "uuid": uuid,
-        "timestamp": int(time.time()),
-        "lang": lang,
-        "device_type": device_type,
-        "soocii_id": soocii_id
-    }, ensure_ascii=False), _get_token_info()["access"]["secret_key"])
-
-    return token
+    key_info = _get_token_info()['access']
+    cryper = AccessTokenCryper(key_info['secret_key'], key_info['age'])
+    return cryper.get_user_token(pid=pid, uid=uid, id=id, lang=lang, device_type=device_type, soocii_id=soocii_id).encode('utf-8')
 
 
 def generate_refresh_token(access_token):
-    token = _generate_token(json.dumps({
-        "access_token": access_token,
-        "timestamp": int(time.time()),
-    }, ensure_ascii=False), _get_token_info()["refresh"]["secret_key"])
-
-    return token
+    key_info = _get_token_info()['refresh']
+    cryper = RefreshTokenCryper(key_info['secret_key'], key_info['age'])
+    return cryper.get_token(access_token).encode('utf-8')

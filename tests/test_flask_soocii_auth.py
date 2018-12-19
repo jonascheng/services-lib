@@ -27,7 +27,7 @@ class TestFlaskSoociiAuth:
 
     def test_valid_token(self):
         SoociiAuthenticator(self.app)
-        token = auth.generate_access_token('', '', 1, uuid.uuid4().hex).decode('utf-8')
+        token = auth.generate_access_token('MP01', uuid.uuid4().hex, 1, '', soocii_id='fake_soocii_id').decode('utf-8')
         resp = self.client.get('/', headers={'Authorization': 'Bearer {}'.format(token)})
         assert resp.status_code == 200
 
@@ -42,6 +42,7 @@ class TestFlaskSoociiAuth:
         assert resp.status_code == 401
 
     def test_is_safe_req_is_true(self):
+
         def fake_func(_):
             return True
 
@@ -50,6 +51,7 @@ class TestFlaskSoociiAuth:
         assert resp.status_code == 200
 
     def test_is_safe_req_is_false(self):
+
         def fake_func(_):
             return False
 
@@ -59,7 +61,9 @@ class TestFlaskSoociiAuth:
 
     def test_user_is_backstage(self):
         with self.app.test_client() as c:
-            token = auth.generate_access_token('', '', 1, uuid.uuid4().hex).decode('utf-8')
+            token = auth.generate_access_token(
+                'MP01', uuid.uuid4().hex, 1, '', soocii_id='fake_soocii_id', device_type='BACKSTAGE'
+            ).decode('utf-8')
             SoociiAuthenticator(self.app)
             resp = c.get('/', headers={'Authorization': 'Bearer {}'.format(token)})
             assert resp.status_code == 200
@@ -67,13 +71,16 @@ class TestFlaskSoociiAuth:
 
     def test_user_is_normal(self):
         with self.app.test_client() as c:
-            token = auth.generate_access_token('', uuid.uuid4().hex, 1, uuid.uuid4().hex).decode('utf-8')
+            token = auth.generate_access_token(
+                'MP01', uuid.uuid4().hex, 1, '', soocii_id='fake_soocii_id'
+            ).decode('utf-8')
             SoociiAuthenticator(self.app)
             resp = c.get('/', headers={'Authorization': 'Bearer {}'.format(token)})
             assert resp.status_code == 200
             assert isinstance(g.user, users.User)
 
     def test_user_anonymous(self):
+
         def fake_func(_):
             return True
 
@@ -86,7 +93,7 @@ class TestFlaskSoociiAuth:
     def test_user_soocii_guest(self):
         with self.app.test_client() as c:
             token = auth.generate_access_token(
-                '', uuid.uuid4().hex, 1, uuid.uuid4().hex, soocii_id="soocii_guest"
+                'MP01', uuid.uuid4().hex, 1, '', soocii_id='soocii_guest'
             ).decode('utf-8')
             SoociiAuthenticator(self.app)
             resp = c.get('/', headers={'Authorization': 'Bearer {}'.format(token)})
