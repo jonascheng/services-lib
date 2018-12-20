@@ -47,10 +47,10 @@ def decode_access_token(token, check_timestamp=True):
     return token
 
 
-def generate_access_token(pid, uid, id, uuid, lang='EN-US', device_type='', soocii_id=''):
+def generate_access_token(pid, uid, id, uuid, lang='EN-US', tz=8, device_type='', soocii_id=''):
     key_info = _get_token_info()['access']
     cryper = AccessTokenCryper(key_info['secret_key'], key_info['age'])
-    return cryper.get_user_token(pid=pid, uid=uid, id=id, lang=lang, device_type=device_type, soocii_id=soocii_id).encode('utf-8')
+    return cryper.get_user_token(pid=pid, uid=uid, id=id, lang=lang, tz=tz, device_type=device_type, soocii_id=soocii_id).encode('utf-8')
 
 
 def generate_refresh_token(access_token):
