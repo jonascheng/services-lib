@@ -4,6 +4,22 @@ soocii\_services\_lib package
 Submodules
 ----------
 
+soocii\_services\_lib.exceptions module
+---------------------------------------
+
+.. automodule:: soocii_services_lib.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+soocii\_services\_lib.tokens module
+-----------------------------------
+
+.. automodule:: soocii_services_lib.tokens
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 soocii\_services\_lib.auth module
 ---------------------------------
 
