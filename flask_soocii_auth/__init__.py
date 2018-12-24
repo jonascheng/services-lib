@@ -54,6 +54,7 @@ class SoociiAuthenticator:
 
     @staticmethod
     def validate_token(is_safe_request_func=None):
+
         def abort_json_resp(status, data):
             abort(status, response=make_response(jsonify(data), status))
 
@@ -100,10 +101,7 @@ class SoociiAuthenticator:
 
         current_app.logger.info(
             "{req.method} {req.path}. "
-            "access_token: {token}. ".format(
-                token=g.access_token if hasattr(g, 'access_token') else None,
-                req=request
-            )
+            "access_token: {token}. ".format(token=g.access_token if hasattr(g, 'access_token') else None, req=request)
         )
 
     @staticmethod
@@ -116,7 +114,7 @@ class SoociiAuthenticator:
             g.user = users.SoociiGuest()
             return
 
-        if g.access_token['uid'] == '':
+        if g.access_token.get('device_type') == 'BACKSTAGE' or g.access_token.get('role') == 'backstage':
             g.user = users.BackstageUser()
             return
 
